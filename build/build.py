@@ -734,6 +734,7 @@ if __name__ == "__main__":
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         f'  <url><loc>{C.SITE_URL}</loc><lastmod>{__import__("datetime").date.today().isoformat()}</lastmod></url>\n</urlset>\n', encoding="utf-8")
     (SITE / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {C.SITE_URL}sitemap.xml\n", encoding="utf-8")
+    (SITE / ".nojekyll").write_text("", encoding="utf-8")  # serve files as-is (keeps _-prefixed names)
     (SITE / "CNAME").write_text(C.SITE_URL.split("/")[2] + "\n", encoding="utf-8")
     (SITE / "index.html").write_text(stamp(minify_html(curly(page()))), encoding="utf-8")
     print("wrote", SITE / "index.html", "resources:", len(C.RESOURCES), "tasks:", sum(len(s['items']) for s in C.ROADMAP), "terms:", len(C.TERMS))
