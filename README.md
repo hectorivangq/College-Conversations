@@ -48,5 +48,9 @@ python3 build/build.py
 git add -A && git commit -m "Describe the change" && git push
 ```
 
-Pages redeploys in about a minute. Re-check links every few months (`.gov` pages move),
+Pages redeploys in about a minute.
+
+Google Search Console: property `https://collegeconversations.org/` (URL prefix), owned by
+hectorivangq@gmail.com, verified with `docs/googlebad57a6a9d2adb7f.html`. **Never delete
+that file**, or the property loses verification. Sitemap submitted 2026-10-02. Re-check links every few months (`.gov` pages move),
 and show Dr. Fedor the new logo before it goes on the channel.
