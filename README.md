@@ -14,8 +14,8 @@ gold `#F5B335`, banner cream `#F6F1E7`, Fraunces and Inter.
 |---|---|
 | `build/content.py` | **All copy and data**: resources, roadmap, glossary, videos, FAQ. Edit here. |
 | `build/build.py` | Generates `site/index.html` from content.py; downloads video thumbnails once. |
-| `site/` | The finished static site. Upload this folder to any host. |
-| `site/css/tokens.css` | Every colour, size, space and motion value. The only file with raw values. |
+| `docs/` | The finished static site. GitHub Pages serves it from `main` /docs at collegeconversations.org. |
+| `docs/css/tokens.css` | Every colour, size, space and motion value. The only file with raw values. |
 | `design/` | Logo drafts (A was chosen, refined in `logo-v2`), OG image and icon sources, her YouTube avatar. |
 | `qa/` | Audit script, capture script and review screenshots. |
 
@@ -25,7 +25,7 @@ gold `#F5B335`, banner cream `#F6F1E7`, Fraunces and Inter.
 python3 build/build.py
 ```
 
-Then open `site/index.html` through a local server (the preview config is in
+Then open `docs/index.html` through a local server (the preview config is in
 `.claude/launch.json`, port 4200). CSS and JS links get a content hash on every build, so
 browsers never show stale styles.
 
@@ -37,10 +37,16 @@ browsers never show stale styles.
 - Channel numbers (350K+ views, 5,400+ subscribers, 51K+ on Understanding Credit Hours) come
   from YouTube Studio, September 2026.
 
-## Before launch (Hector's call)
+## Publishing
 
-1. Pick the domain and host (Netlify, Vercel or Cloudflare Pages all serve `site/` as-is).
-2. Once the domain exists, add a canonical URL, `og:url`, absolute `og:image` URL and a
-   `sitemap.xml`, and add a `Sitemap:` line to `robots.txt`.
-3. Show Dr. Fedor the new logo before it goes anywhere public; it's a new mark, not yet on
-   the channel.
+The site is live at https://collegeconversations.org (GitHub Pages, repo
+`hectorivangq/College-Conversations`, source `main` /docs, DNS at Squarespace).
+To publish a change:
+
+```bash
+python3 build/build.py
+git add -A && git commit -m "Describe the change" && git push
+```
+
+Pages redeploys in about a minute. Re-check links every few months (`.gov` pages move),
+and show Dr. Fedor the new logo before it goes on the channel.

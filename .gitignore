@@ -2,6 +2,6 @@
 .claude/
 qa/*.png
 qa/lh-*
-site/_qa.js
-site/_shot.html
+docs/_qa.js
+docs/_shot.html
 __pycache__/

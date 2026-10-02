@@ -9,7 +9,7 @@ import html, json, os, sys, urllib.request, io
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SITE = HERE.parent / "site"
+SITE = HERE.parent / "docs"
 sys.path.insert(0, str(HERE))
 import content as C  # noqa: E402
 
