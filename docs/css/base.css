@@ -278,8 +278,13 @@ p, li { text-wrap: pretty; }
 
   /* Split headline: words rise from behind a mask line by line */
   .js [data-split] { opacity: 1; transform: none; }
-  .js [data-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-  .js [data-split] .w > span { display: inline-block; transform: translateY(105%); transition: transform 1s var(--ease-out); transition-delay: calc(var(--i, 0) * 45ms + 80ms); }
+  /* Each word rises inside its own mask. The mask is padded well past the
+     letter shapes (descenders, italic overhang, apostrophes) and cancelled with
+     an equal negative margin so layout doesn't move; once the heading has
+     finished (.is-done) the mask is removed so nothing can stay clipped. */
+  .js [data-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.12em 0.16em 0.3em; margin: -0.12em -0.16em -0.3em; }
+  .js [data-split].is-done .w { overflow: visible; }
+  .js [data-split] .w > span { display: inline-block; transform: translateY(140%); transition: transform 1s var(--ease-out); transition-delay: calc(var(--i, 0) * 45ms + 80ms); }
   .js [data-split].is-in .w > span { transform: none; }
 
   .js .draw[data-reveal] { opacity: 1; transform: none; }

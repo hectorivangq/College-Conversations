@@ -73,19 +73,41 @@
     requestAnimationFrame(tick);
   };
 
+  /* Masked headings drop their word masks once every word has finished
+     rising (transitionend, not a timer: a background tab pauses transitions
+     but not timers, and an early unmask would let moving words spill out). */
+  const markDone = (el) => {
+    if (reduce) { el.classList.add('is-done'); return; }
+    const spans = [...el.querySelectorAll('.w > span')];
+    let left = spans.length;
+    const finish = () => el.classList.add('is-done');
+    if (!left) return finish();
+    spans.forEach((sp) => sp.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'transform' && --left === 0) finish();
+    }, { once: false }));
+    /* Safety net: if transitions never fire, unmask once nothing is moving */
+    const check = () => {
+      if (el.classList.contains('is-done')) return;
+      if (spans.every((sp) => getComputedStyle(sp).transform === 'none')) finish();
+      else setTimeout(check, 1000);
+    };
+    setTimeout(check, 3000);
+  };
+
   /* One observer for everything that reveals */
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
       el.classList.add('is-in');
+      if (el.hasAttribute('data-split')) markDone(el);
       if (el.dataset.count) countUp(el);
       io.unobserve(el);
     });
   }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
 
   document.querySelectorAll('[data-reveal], [data-count]').forEach((el) => {
-    if (reduce) el.classList.add('is-in');
+    if (reduce) { el.classList.add('is-in'); if (el.hasAttribute('data-split')) markDone(el); }
     else io.observe(el);
   });
 
@@ -93,7 +115,7 @@
      (background tab, slow device). */
   window.addEventListener('load', () => setTimeout(() => {
     document.querySelectorAll('[data-reveal]:not(.is-in)').forEach((el) => {
-      if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('is-in'); io.unobserve(el); }
+      if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('is-in'); if (el.hasAttribute('data-split')) markDone(el); io.unobserve(el); }
     });
   }, 1200));
 
