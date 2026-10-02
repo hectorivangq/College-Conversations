@@ -1,0 +1,103 @@
+/* ==========================================================================
+   College Conversations resource library: design tokens.
+   The ONLY file with raw values. Colours are the channel's own brand values
+   (navy #0B1F3A, gold #F5B335, banner cream #F6F1E7), so they stay as the
+   literal hex the brand uses. Contrast ratios are noted beside each text pair.
+   Direction: "Warm Community" from the Swipe Shelf, read through the brand.
+   ========================================================================== */
+
+@font-face { font-family: "Fraunces"; src: url("../fonts/Fraunces-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../fonts/Fraunces-Italic-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/Inter-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/Inter-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+/* Metric-matched fallbacks so the swap to the web font doesn't shift the layout */
+@font-face { font-family: "Fraunces Fallback"; src: local("Georgia"); size-adjust: 104%; ascent-override: 94%; descent-override: 24%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"); size-adjust: 107%; ascent-override: 90%; descent-override: 22%; line-gap-override: 0%; }
+
+:root {
+  color-scheme: light;
+
+  /* ---- Colour ---- */
+  --color-bg:          #F6F1E7;  /* banner cream: the ground */
+  --color-surface:     #FFFDF8;  /* cards */
+  --color-surface-2:   #ECE4D3;  /* sand bands */
+  --color-ink:         #0B1F3A;  /* navy on cream 14.67:1 */
+  --color-muted:       #4A5A6E;  /* on cream 6.26, on sand 5.57 */
+  --color-line:        #DCD2BF;  /* hairlines (decorative) */
+  --color-line-firm:   #4A5A6E;  /* input and control edges, 6.26:1 */
+  --color-accent:      #8A5D12;  /* deep gold text/focus on light, 5.10:1 */
+  --color-accent-ink:  #FFFDF8;
+  --color-gold:        #F5B335;  /* brand gold: fills on navy, 8.95:1 */
+  --color-gold-soft:   #FBE7BC;  /* chips and highlights on cream */
+  --color-inverse:     #0B1F3A;
+  --color-panel:       #16324F;  /* raised surface on navy */
+  --color-inverse-ink: #F6F1E7;  /* 14.67:1 */
+  --color-inverse-muted:#B8C4D3; /* on navy 9.34, on panel 7.41 */
+  --color-inverse-line: #2A4868;
+  --color-danger:      #A8543C;  /* brand clay */
+  --color-rule:        rgb(74 90 110 / 0.16); /* index-card ruling */
+
+  /* ---- Type ---- */
+  --font-display: "Fraunces", "Fraunces Fallback", Georgia, serif;
+  --font-body:    "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --weight-body: 400;
+  --weight-strong: 600;
+  --weight-display: 600;
+  --tracking-display: -0.02em;
+  --tracking-eyebrow: 0.14em;
+
+  --step--2: clamp(0.72rem, 0.70rem + 0.08vw, 0.78rem);
+  --step--1: clamp(0.84rem, 0.81rem + 0.12vw, 0.92rem);
+  --step-0:  clamp(1.00rem, 0.96rem + 0.19vw, 1.125rem);
+  --step-1:  clamp(1.18rem, 1.11rem + 0.31vw, 1.40rem);
+  --step-2:  clamp(1.40rem, 1.29rem + 0.49vw, 1.76rem);
+  --step-3:  clamp(1.66rem, 1.49rem + 0.74vw, 2.20rem);
+  --step-4:  clamp(1.95rem, 1.68rem + 1.20vw, 2.85rem);
+  --step-5:  clamp(2.20rem, 1.72rem + 2.10vw, 3.75rem);
+  --step-6:  clamp(2.45rem, 1.72rem + 3.20vw, 4.75rem);
+  --step-7:  clamp(2.60rem, 1.55rem + 4.60vw, 6.00rem);
+
+  --leading-tight: 1.02;
+  --leading-snug:  1.15;
+  --leading-body:  1.62;
+  --measure: 64ch;
+
+  /* ---- Space (fluid 360px -> 1440px) ---- */
+  --space-3xs: clamp(0.250rem, 0.240rem + 0.046vw, 0.281rem);
+  --space-2xs: clamp(0.500rem, 0.479rem + 0.093vw, 0.562rem);
+  --space-xs:  clamp(0.750rem, 0.719rem + 0.139vw, 0.844rem);
+  --space-s:   clamp(1.000rem, 0.958rem + 0.185vw, 1.125rem);
+  --space-m:   clamp(1.500rem, 1.438rem + 0.278vw, 1.688rem);
+  --space-l:   clamp(2.000rem, 1.917rem + 0.370vw, 2.250rem);
+  --space-xl:  clamp(3.000rem, 2.875rem + 0.556vw, 3.375rem);
+  --space-2xl: clamp(4.000rem, 3.833rem + 0.741vw, 4.500rem);
+  --space-3xl: clamp(6.000rem, 5.750rem + 1.111vw, 6.750rem);
+  --space-section: clamp(4.000rem, 2.333rem + 7.407vw, 9.000rem);
+  --gutter:        clamp(1.000rem, 0.444rem + 2.469vw, 2.667rem);
+  --container:     78rem;
+  --container-narrow: 46rem;
+  --header-h: 4.5rem;
+
+  /* ---- Shape & depth: soft, friendly radius family ---- */
+  --radius-s: 0.5rem;
+  --radius-m: 1rem;
+  --radius-l: 1.75rem;
+  --radius-pill: 999px;
+  --shadow-s: 0 1px 2px rgb(11 31 58 / 0.06), 0 1px 1px rgb(11 31 58 / 0.04);
+  --shadow-m: 0 18px 40px -20px rgb(11 31 58 / 0.35);
+  --shadow-l: 0 40px 80px -40px rgb(11 31 58 / 0.45);
+
+  /* ---- Motion: crisp and warm (reveal 800ms, medium distance) ---- */
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 560ms;
+  --dur-reveal: 820ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --reveal-distance: 1.75rem;
+  --stagger: 70ms;
+}
