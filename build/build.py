@@ -185,9 +185,12 @@ def hero():
 <section class="hero" id="top">
   <div class="hero__bg" aria-hidden="true"><span class="hero__glow"></span><span class="hero__glow hero__glow--2"></span><span class="hero__grid"></span></div>
   <div class="container hero__inner">
-    <p class="pill" data-reveal><span class="pill__dot"></span>Free resource library, every link checked {C.CHECKED}</p>
-    <h1 class="hero__title" data-split>College doesn't come <span class="nowrap">with <span class="hero__face" data-keep><img src="img/fedor-profile-700.webp" srcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" sizes="(min-width: 56rem) 260px, 40vw" width="700" height="875" alt="" fetchpriority="high"></span></span> instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
-    <p class="hero__lede">The forms, tools, deadlines and straight answers you need from senior year to your first job, gathered by <a class="hero__byline" href="#about"><span class="hero__byline-img"><img src="img/fedor-profile-700.webp" width="700" height="875" alt=""></span>Dr. Janice Fedor</a>, two decades a professor, advisor and administrator.</p>
+    <a class="guide" href="#about" data-reveal>
+      <span class="guide__img"><img src="img/fedor-profile-700.webp" width="700" height="875" alt="" fetchpriority="high"></span>
+      <span class="guide__text"><span class="guide__name">Dr. Janice Fedor</span><span class="guide__role">Your guide, 20 years in higher education</span></span>
+    </a>
+    <h1 class="hero__title" data-split>College doesn't come with instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
+    <p class="hero__lede">The forms, tools, deadlines and straight answers you need from senior year to your first job, gathered by a professor who has spent two decades inside higher education.</p>
     <form class="finder" role="search" action="#library" data-reveal style="--i:4">
       <label class="visually-hidden" for="hero-q">Search {n} resources</label>
       {icon("search", "icon finder__icon")}
@@ -195,8 +198,9 @@ def hero():
       <button class="btn btn--gold finder__btn" type="submit" data-magnetic><span class="finder__btn-text">Find it</span> {icon("arrow", "icon arrow")}</button>
     </form>
     <div class="qchips" data-reveal style="--i:5"><span class="qchips__label">Popular:</span>{chips}</div>
+    <p class="checked" data-reveal style="--i:6"><span class="pill__dot"></span>Every link opened and checked {C.CHECKED}</p>
   </div>
-  <div class="arc" data-cursor="Drag">
+  <div class="arc">
     <p class="arc__hint" aria-hidden="true">Drag to spin. Tap a card to find it.</p>
     <ul class="arc__ring" role="list" aria-label="Quick topics">{cards}</ul>
   </div>
@@ -237,7 +241,7 @@ RULEBOOK = [("Credit hours", "Credit hour"), ("Prerequisites", "Prerequisite"), 
 
 
 def marquee():
-    items = "".join(f'''<li class="rule"><a class="rule__link" href="#decoder" data-term="{e(term)}" data-cursor="Define">
+    items = "".join(f'''<li class="rule"><a class="rule__link" href="#decoder" data-term="{e(term)}">
         <span class="rule__n">{i + 1:02d}</span><span class="rule__w">{e(w)}</span>{icon("arrow", "icon rule__go")}</a></li>'''
                     for i, (w, term) in enumerate(RULEBOOK))
     return f'''
@@ -536,7 +540,7 @@ def vcard(key, feature=False):
     src = f"img/yt/{vid}-{w}.webp" if (SITE / "img" / "yt" / f"{vid}-{w}.webp").exists() else f"img/yt/{vid}-640.webp"
     sizes = "(min-width: 56rem) 45vw, 100vw" if feature else "(min-width: 56rem) 24vw, (min-width: 36rem) 45vw, 100vw"
     return f'''<article class="vcard{' vcard--feature' if feature else ''}">
-      <a class="vcard__thumb" data-cursor="Play" href="https://www.youtube.com/watch?v={vid}" data-video="{vid}" data-title="{e(title)}" aria-label="Play {e(title)} ({dur})">
+      <a class="vcard__thumb" href="https://www.youtube.com/watch?v={vid}" data-video="{vid}" data-title="{e(title)}" aria-label="Play {e(title)} ({dur})">
         <img src="{src}" alt="" width="{w}" height="{round(w*9/16)}" loading="lazy" decoding="async" sizes="{sizes}">
         <span class="vcard__play">{icon("play")}</span>
         <span class="vcard__dur">{dur}</span>
@@ -552,7 +556,7 @@ def videos():
         ti = "" if sel else ' tabindex="-1"'
         tabs.append(f'<button class="chip" role="tab" id="vtab-{sid}" aria-controls="vpanel-{sid}" aria-selected="{str(sel).lower()}"{ti}>{e(name)}</button>')
         grid = "".join(vcard(k) for k in keys)
-        panels.append(f'<div class="vgrid" role="tabpanel" id="vpanel-{sid}" aria-labelledby="vtab-{sid}" data-cursor="Drag"{"" if sel else " hidden"}>{grid}</div>')
+        panels.append(f'<div class="vgrid" role="tabpanel" id="vpanel-{sid}" aria-labelledby="vtab-{sid}"{"" if sel else " hidden"}>{grid}</div>')
     fvid, ftitle, fdur = yt("credit")
     return f'''
 <section class="section section--sand videos-sec" id="videos" aria-labelledby="videos-h">
@@ -727,7 +731,7 @@ def page():
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/Fraunces-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="img/fedor-profile-700.webp" as="image" imagesrcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" imagesizes="(min-width: 56rem) 260px, 40vw">
+
 <link rel="preload" href="fonts/Fraunces-Italic-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -742,7 +746,6 @@ def page():
 <script src="js/motion.js" defer></script>
 <script src="js/app.js" defer></script>
 <script src="js/fx.js" defer></script>
-<div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
 </body>
 </html>
 '''

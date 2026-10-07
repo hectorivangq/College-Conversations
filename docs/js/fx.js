@@ -206,21 +206,6 @@
       });
       el.addEventListener('pointerleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' }));
     });
-    const cur = $('.cursor');
-    const label = $('.cursor__label');
-    if (cur) {
-      const qx = gsap.quickTo(cur, 'x', { duration: 0.35, ease: 'power3.out' });
-      const qy = gsap.quickTo(cur, 'y', { duration: 0.35, ease: 'power3.out' });
-      addEventListener('pointermove', (e) => { qx(e.clientX); qy(e.clientY); }, { passive: true });
-      let current = null;
-      document.addEventListener('pointerover', (e) => {
-        const t = e.target.closest('[data-cursor]');
-        if (t === current) return;
-        current = t;
-        if (t) { label.textContent = t.dataset.cursor; gsap.to(cur, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }); }
-        else gsap.to(cur, { scale: 0, opacity: 0, duration: 0.25, ease: 'power2.in' });
-      });
-    }
   }
 
   /* ---------- Pointer tilt ---------- */
