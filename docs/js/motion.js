@@ -29,7 +29,7 @@
       }
       if (node.nodeType !== 1) return '';
       const tag = node.tagName.toLowerCase();
-      if (tag === 'svg') return node.outerHTML;
+      if (tag === 'svg' || node.hasAttribute('data-keep')) return node.outerHTML;
       const cls = node.getAttribute('class');
       return `<${tag}${cls ? ` class="${cls}"` : ''} aria-hidden="true">${[...node.childNodes].map(render).join('')}</${tag}>`;
     };

@@ -10,14 +10,18 @@
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode: keep going */ } },
   };
-  const scrollToEl = (el) => el && el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  const scrollToEl = (el) => {
+    if (!el) return;
+    if (window.__lenis) window.__lenis.scrollTo(el, { offset: -84, duration: 1.2 });
+    else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  };
 
   /* ---------- Year ---------- */
   $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
   /* ---------- Scroll progress, roadmap rail ---------- */
   const bar = $('.progress');
-  const stagesEl = $('.stages');
+  const stagesEl = $('.stages-wrap');
   const stageEls = $$('.stage');
   let ticking = false;
   const onScroll = () => {
@@ -27,7 +31,7 @@
       const h = document.documentElement;
       const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
       if (bar) bar.style.setProperty('--p', p.toFixed(4));
-      if (stagesEl) {
+      if (stagesEl && !window.__roadmapHorizontal) {
         const r = stagesEl.getBoundingClientRect();
         const mid = innerHeight * 0.55;
         const t = Math.min(1, Math.max(0, (mid - r.top) / r.height));
@@ -43,6 +47,17 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll);
   onScroll();
+
+  /* ---------- Header: navy whenever a navy section is underneath it ---------- */
+  const headerEl = $('.site-header');
+  const setDark = () => {
+    if (!headerEl) return;
+    const el = document.elementFromPoint(8, headerEl.offsetHeight + 2);
+    headerEl.classList.toggle('is-dark', !!(el && el.closest('.hero, .rulebook, .section--inverse, .site-footer')));
+  };
+  addEventListener('scroll', setDark, { passive: true });
+  addEventListener('resize', setDark);
+  setDark();
 
   /* ---------- Nav: highlight the section in view ---------- */
   const navLinks = $$('.nav a');
@@ -103,10 +118,21 @@
     if (empty) empty.hidden = shown !== 0;
     if (collapsiblesReady) syncCollapsibles();
   };
+  /* Cards glide to their new places when the set changes (Flip, if loaded) */
+  const glide = (mutate) => {
+    const F = window.Flip;
+    if (!F || reduce) return mutate();
+    const state = F.getState(cards);
+    mutate();
+    F.from(state, {
+      duration: 0.55, ease: 'power3.inOut', scale: false, absolute: false,
+      onEnter: (els) => window.gsap.fromTo(els, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }),
+    });
+  };
   const setStage = (s) => {
     stage = s;
     segBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filterStage === s)));
-    filterLibrary();
+    glide(filterLibrary);
   };
   if (libQ) {
     libQ.addEventListener('input', filterLibrary);
@@ -124,6 +150,7 @@
     heroForm.addEventListener('submit', (ev) => { ev.preventDefault(); runSearch($('#hero-q').value); });
   }
   $$('.qchip').forEach((a) => a.addEventListener('click', (ev) => { ev.preventDefault(); runSearch(a.dataset.q); }));
+  $$('.arc__card').forEach((b) => b.addEventListener('click', () => runSearch(b.dataset.q)));
   $$('.path[data-stage]').forEach((a) => a.addEventListener('click', () => setStage(a.dataset.stage)));
 
   /* Library index: mark the category in view */
@@ -169,6 +196,45 @@
   };
   addEventListener('resize', syncCollapsibles);
   collapsiblesReady = true;
+
+  /* ---------- Decoder flashcards ---------- */
+  const termCards = $$('.term');
+  const flip = (t, on) => {
+    t.classList.toggle('is-flipped', on);
+    const b = $('.term__flip', t);
+    if (b) b.setAttribute('aria-expanded', String(on));
+  };
+  termCards.forEach((t) => {
+    $('.term__flip', t).addEventListener('click', () => { flip(t, true); setTimeout(() => $('.term__unflip', t).focus({ preventScroll: true }), 420); });
+    $('.term__unflip', t).addEventListener('click', () => { flip(t, false); setTimeout(() => $('.term__flip', t).focus({ preventScroll: true }), 420); });
+  });
+  const flipAll = $('[data-flipall]');
+  if (flipAll) flipAll.addEventListener('click', () => {
+    const on = flipAll.getAttribute('aria-pressed') !== 'true';
+    flipAll.setAttribute('aria-pressed', String(on));
+    flipAll.textContent = on ? 'Flip back' : 'Flip all';
+    termCards.forEach((t, k) => setTimeout(() => flip(t, on), reduce ? 0 : k * 25));
+  });
+  const shuffleBtn = $('[data-shuffle]');
+  if (shuffleBtn) shuffleBtn.addEventListener('click', () => {
+    const list = $('#terms-grid');
+    const order = termCards.slice().sort(() => Math.random() - 0.5);
+    const F = window.Flip;
+    const state = F && !reduce ? F.getState(termCards) : null;
+    order.forEach((t) => list.appendChild(t));
+    if (typeof syncCollapsibles === 'function') syncCollapsibles();
+    if (state) F.from(state, { duration: 0.7, ease: 'power3.inOut', stagger: 0.01, absolute: false });
+  });
+  /* The rulebook: each word opens its flashcard */
+  $$('.rule__link').forEach((a) => a.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const name = a.dataset.term;
+    const tq = $('#term-q');
+    if (tq) { tq.value = name; tq.dispatchEvent(new Event('input')); }
+    scrollToEl($('#decoder'));
+    const card = termCards.find((t) => t.dataset.term === name);
+    if (card) setTimeout(() => flip(card, true), reduce ? 0 : 900);
+  }));
 
   /* ---------- Decoder search ---------- */
   const termQ = $('#term-q');
@@ -256,14 +322,30 @@
     const status = $('[data-status]');
     const classes = $('[data-classes]');
     const finish = $('[data-finish]');
-    const MAX = 21 * 3;
-    const setBar = (k, v) => { $(`[data-bar="${k}"]`).style.setProperty('--w', (v / MAX).toFixed(4)); $(`[data-val="${k}"]`).textContent = `${v} hrs`; };
+    const grid = $('[data-hours-grid]');
+    const CELLS = 21 * 3;
+    const cells = [];
+    for (let k = 0; k < CELLS; k++) {
+      const d = document.createElement('span');
+      d.className = 'hours__cell' + (k === 39 ? ' is-forty' : '');
+      d.style.transitionDelay = `${k * 6}ms`;
+      grid.appendChild(d); cells.push(d);
+    }
+    const setVal = (k, v) => { $(`[data-val="${k}"]`).textContent = `${v} hrs`; };
+    const paint = (c) => {
+      cells.forEach((d, k) => {
+        const cls = k < c ? 'class' : k < c * 3 ? 'out' : '';
+        d.classList.toggle('is-class', cls === 'class');
+        d.classList.toggle('is-out', cls === 'out');
+        d.classList.toggle('is-job', !cls && k < 40);
+      });
+    };
     const fmtYears = (sem) => { if (sem === 1) return 'half a year'; const y = sem / 2; return Number.isInteger(y) ? `${y} year${y === 1 ? '' : 's'}` : `${y.toFixed(1)} years`; };
     const calc = () => {
       const c = +credits.value;
       out.value = c; out.textContent = c;
       credits.style.setProperty('--fill', `${((c - 1) / 20) * 100}%`);
-      setBar('class', c); setBar('out', c * 2); setBar('total', c * 3);
+      setVal('class', c); setVal('out', c * 2); setVal('total', c * 3); paint(c);
       let label = 'Full-time', level = 'full';
       if (c > 18) { label = 'Full-time, heavy load'; level = 'heavy'; }
       else if (c < 6) { label = 'Less than half-time'; level = 'less'; }

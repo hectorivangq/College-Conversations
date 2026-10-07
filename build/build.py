@@ -155,52 +155,70 @@ def header():
 </header>'''
 
 
+ARC_TOPICS = [
+    ("FAFSA", "Free money starts with one form", "FAFSA"),
+    ("Credit hours", "How your whole schedule works", "Credit hours"),
+    ("Scholarships", "Searches that never charge you", "Scholarships"),
+    ("Degree plan", "Every course you need, mapped", "degree"),
+    ("Office hours", "The meeting most students skip", "office hours"),
+    ("Internships", "Experience before the first job", "Internships"),
+    ("Free textbooks", "Read first, buy never", "textbook"),
+    ("Mental health", "Free help, any hour", "Mental health"),
+    ("Pell Grant", "Aid you usually never repay", "Pell"),
+    ("Transfer credit", "Check before you move", "transfer"),
+    ("Careers", "What jobs pay, honestly", "career"),
+    ("Student loans", "Borrow less, repay smart", "loan"),
+]
+
+
 def hero():
     chips = "".join(f'<a class="qchip" href="#library" data-q="{e(q)}">{e(q)}</a>'
-                    for q in ["FAFSA", "Scholarships", "Credit hours", "Internships", "Mental health", "Free textbooks"])
+                    for q in ["FAFSA", "Scholarships", "Credit hours", "Internships", "Mental health"])
     n = len(C.RESOURCES)
+    cards = "".join(f'''<li class="arc__item"><button class="arc__card" type="button" data-q="{e(q)}" style="--k:{i}">
+          <span class="arc__call">No. {i + 1:02d}</span>
+          <span class="arc__title">{e(t)}</span>
+          <span class="arc__sub">{e(sub)}</span>
+          <span class="arc__go">Find it {icon("arrow", "icon")}</span>
+        </button></li>''' for i, (t, sub, q) in enumerate(ARC_TOPICS))
     return f'''
 <section class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true"><span class="hero__glow"></span><span class="hero__glow hero__glow--2"></span><span class="hero__grid"></span></div>
+  <div class="container hero__inner">
+    <p class="pill" data-reveal><span class="pill__dot"></span>Free resource library, every link checked {C.CHECKED}</p>
+    <h1 class="hero__title" data-split>College doesn't come <span class="nowrap">with <span class="hero__face" data-keep><img src="img/fedor-profile-700.webp" srcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" sizes="(min-width: 56rem) 260px, 40vw" width="700" height="875" alt="" fetchpriority="high"></span></span> instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
+    <p class="hero__lede">The forms, tools, deadlines and straight answers you need from senior year to your first job, gathered by <a class="hero__byline" href="#about"><span class="hero__byline-img"><img src="img/fedor-profile-700.webp" width="700" height="875" alt=""></span>Dr. Janice Fedor</a>, two decades a professor, advisor and administrator.</p>
+    <form class="finder" role="search" action="#library" data-reveal style="--i:4">
+      <label class="visually-hidden" for="hero-q">Search {n} resources</label>
+      {icon("search", "icon finder__icon")}
+      <input id="hero-q" name="q" type="search" placeholder="What do you need?" autocomplete="off">
+      <button class="btn btn--gold finder__btn" type="submit" data-magnetic><span class="finder__btn-text">Find it</span> {icon("arrow", "icon arrow")}</button>
+    </form>
+    <div class="qchips" data-reveal style="--i:5"><span class="qchips__label">Popular:</span>{chips}</div>
+  </div>
+  <div class="arc" data-cursor="Drag">
+    <p class="arc__hint" aria-hidden="true">Drag to spin. Tap a card to find it.</p>
+    <ul class="arc__ring" role="list" aria-label="Quick topics">{cards}</ul>
+  </div>
+</section>
+<section class="proof-sec" aria-label="The library in numbers">
   <div class="container">
-    <div class="hero__card">
-      <div class="hero__bg" aria-hidden="true"><span class="hero__glow"></span><span class="hero__ring hero__ring--1"></span><span class="hero__ring hero__ring--2"></span></div>
-      <div class="hero__copy">
-        <p class="pill" data-reveal><span class="pill__dot"></span>Free resource library, every link checked {C.CHECKED}</p>
-        <h1 class="hero__title" data-split>College doesn't come with instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
-        <p class="hero__lede">The forms, tools, deadlines and straight answers you need from senior year to your first job, gathered by Dr. Janice Fedor after two decades as a professor, advisor and administrator.</p>
-        <form class="finder" role="search" action="#library" data-reveal style="--i:4">
-          <label class="visually-hidden" for="hero-q">Search {n} resources</label>
-          {icon("search", "icon finder__icon")}
-          <input id="hero-q" name="q" type="search" placeholder="What do you need?" autocomplete="off">
-          <button class="btn btn--gold finder__btn" type="submit"><span class="finder__btn-text">Find it</span> {icon("arrow", "icon arrow")}</button>
-        </form>
-        <div class="qchips" data-reveal style="--i:5"><span class="qchips__label">Popular:</span>{chips}</div>
-      </div>
-      <div class="hero__visual" data-reveal>
-        <div class="arch">
-          <span class="arch__line" aria-hidden="true"></span>
-          <div class="arch__photo"><img src="img/fedor-profile-1100.webp" srcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" sizes="(min-width: 56rem) 400px, 68vw" width="1100" height="1375" alt="Dr. Janice Fedor smiling in her office" fetchpriority="high"></div>
-          <p class="hero__tag"><span class="hero__tag-k">Your guide</span>Dr. Janice Fedor</p>
-          <p class="hero__creds" aria-hidden="true">Professor<span></span>Advisor<span></span>Administrator</p>
-        </div>
-      </div>
-    </div>
     <ul class="catalog" role="list" data-stagger>
-      <li><a class="ccard" href="#videos">
+      <li><a class="ccard" data-tilt href="#videos">
         <span class="ccard__call"><span>No. 01</span><span>Videos</span></span>
         <span class="ccard__num">51K+</span>
         <span class="ccard__label">views on her credit hour explainer</span>
         <span class="ccard__stamp" aria-hidden="true">Most<br>watched</span>
         <span class="ccard__go">Watch it {icon("arrow", "icon")}</span>
       </a></li>
-      <li><a class="ccard" href="#library">
+      <li><a class="ccard" data-tilt href="#library">
         <span class="ccard__call"><span>No. 02</span><span>Library</span></span>
         <span class="ccard__num">{n}</span>
         <span class="ccard__label">tools and official links, every one opened and checked</span>
         <span class="ccard__stamp" aria-hidden="true">Checked<br>{C.CHECKED.split()[0][:3]} {C.CHECKED.split()[1]}</span>
         <span class="ccard__go">Browse them {icon("arrow", "icon")}</span>
       </a></li>
-      <li><a class="ccard" href="#roadmap">
+      <li><a class="ccard" data-tilt href="#roadmap">
         <span class="ccard__call"><span>No. 03</span><span>Roadmap</span></span>
         <span class="ccard__num">6</span>
         <span class="ccard__label">stages, from senior year of high school to your first job</span>
@@ -212,13 +230,27 @@ def hero():
 </section>'''
 
 
+RULEBOOK = [("Credit hours", "Credit hour"), ("Prerequisites", "Prerequisite"), ("The FAFSA", "FAFSA"),
+            ("Degree plans", "Degree plan"), ("Office hours", "Office hours"), ("Electives", "Elective"),
+            ("Add/drop", "Add/drop period"), ("Capstones", "Capstone"), ("Accreditation", "Accreditation"),
+            ("Work-study", "Work-study"), ("Transfer credit", "Transfer credit"), ("The syllabus", "Syllabus")]
+
+
 def marquee():
-    items = "".join(f'<li>{e(t)}</li><li class="sep" aria-hidden="true">{icon("plus", "icon")}</li>' for t in C.MARQUEE)
+    items = "".join(f'''<li class="rule"><a class="rule__link" href="#decoder" data-term="{e(term)}" data-cursor="Define">
+        <span class="rule__n">{i + 1:02d}</span><span class="rule__w">{e(w)}</span>{icon("arrow", "icon rule__go")}</a></li>'''
+                    for i, (w, term) in enumerate(RULEBOOK))
     return f'''
-<section class="ticker" aria-label="Topics this library explains">
-  <div class="ticker__row">
-    <div class="marquee"><div class="marquee__track"><ul>{items}</ul><ul aria-hidden="true">{items}</ul></div></div>
-    <button class="ticker__pause" type="button" aria-pressed="false" aria-label="Pause the moving topics">{icon("pause", "icon")}</button>
+<section class="rulebook" aria-labelledby="rulebook-h">
+  <div class="rulebook__pin">
+    <div class="container rulebook__grid">
+      <div class="rulebook__intro">
+        <p class="eyebrow">The rulebook</p>
+        <h2 class="h2" id="rulebook-h" data-split>Nobody hands you the rulebook. <span class="soft">So here it is, in order.</span></h2>
+        <p class="lede" data-reveal>Twelve words that run every college, and that nobody explains at orientation. Tap any one for the plain-English version.</p>
+      </div>
+      <ol class="rulebook__list" role="list">{items}</ol>
+    </div>
   </div>
 </section>'''
 
@@ -227,7 +259,7 @@ def paths():
     tiles = []
     for i, (stage_id, lib_stage, title, sub) in enumerate(C.PATHS):
         st = next(s for s in C.ROADMAP if s["id"] == stage_id)
-        tiles.append(f'''<a class="path path--{i}" href="#stage-{stage_id}" data-stage="{lib_stage}">
+        tiles.append(f'''<a class="path path--{i}" href="#stage-{stage_id}" data-stage="{lib_stage}" data-tilt>
       <span class="path__n">{st["n"]}</span>
       <span class="path__title">{e(title)}</span>
       <span class="path__sub">{e(sub)}</span>
@@ -244,7 +276,7 @@ def paths():
       <p class="lede" data-reveal>Pick the stage you're in. You'll jump straight to the checklist for it, and the library will narrow to what matters for that stage.</p>
     </div>
     <div class="paths" data-stagger>{"".join(tiles)}
-      <a class="path path--help" href="#faq">
+      <a class="path path--help" href="#faq" data-tilt>
         <span class="path__n">{icon("plus", "icon")}</span>
         <span class="path__title">I'm helping a student</span>
         <span class="path__sub">Parents, counselors and mentors: start with the questions families ask most.</span>
@@ -297,12 +329,13 @@ def roadmap():
           <p class="visually-hidden" aria-live="polite" data-meter-live></p>
         </div>
         <button class="btn btn--ghost btn--sm reset" type="button" data-reset>{icon("reset", "icon")} Reset my checklist</button>
+        <p class="now" aria-hidden="true"><span class="now__n">01</span><span class="now__t">Senior year of high school</span></p>
       </div>
     </div>
-    <ol class="stages" role="list">
+    <div class="stages-wrap">
       <span class="stages__rail" aria-hidden="true"><span class="stages__fill"></span></span>
-      {"".join(stages)}
-    </ol>
+      <ol class="stages" role="list">{"".join(stages)}</ol>
+    </div>
   </div>
 </section>'''.replace("Thirty-five", number_word(total))
 
@@ -409,11 +442,14 @@ def tools():
         </div>
         <div class="calc__out" aria-live="polite">
           <div class="calc__status"><span class="status" data-status>Full-time</span><span class="calc__classes" data-classes>about 5 classes</span></div>
-          <div class="week">
-            <div class="week__row"><span class="week__label">In class</span><span class="week__bar"><span class="week__fill week__fill--class" data-bar="class"></span></span><span class="week__val" data-val="class">15 hrs</span></div>
-            <div class="week__row"><span class="week__label">Outside class</span><span class="week__bar"><span class="week__fill week__fill--out" data-bar="out"></span></span><span class="week__val" data-val="out">30 hrs</span></div>
-            <div class="week__row week__row--total"><span class="week__label">Every week</span><span class="week__bar"><span class="week__fill week__fill--total" data-bar="total"></span><span class="week__mark" title="A 40-hour work week"></span></span><span class="week__val" data-val="total">45 hrs</span></div>
-            <p class="week__legend"><span class="week__legend-mark" aria-hidden="true"></span> The dashed line is a 40-hour work week.</p>
+          <div class="hours">
+            <div class="hours__legend">
+              <p><span class="hours__key hours__key--class"></span>In class <strong data-val="class">15 hrs</strong></p>
+              <p><span class="hours__key hours__key--out"></span>Outside class <strong data-val="out">30 hrs</strong></p>
+              <p class="hours__total">Every week <strong data-val="total">45 hrs</strong></p>
+            </div>
+            <div class="hours__grid" data-hours-grid aria-hidden="true"></div>
+            <p class="hours__note"><span class="hours__key hours__key--job"></span>The outlined block is a 40-hour work week. Each square is one hour.</p>
           </div>
           <p class="calc__finish" data-finish>At 15 credits a term, you finish in <strong>8 semesters</strong>, about <strong>4 years</strong>.</p>
           <p class="calc__note">Based on the federal definition of a credit hour: an hour of class and at least two hours of work outside it each week, over about 15 weeks. Full-time is usually 12 credits or more, but your school sets the rules. {video_link("credit", "vlink vlink--inv")}</p>
@@ -454,13 +490,21 @@ def tools():
 
 
 def decoder():
-    letters = sorted({t[0][0].upper() for t in C.TERMS})
     cards = []
     for term, d, v in sorted(C.TERMS, key=lambda t: t[0].lower()):
         vh = f'<p class="term__video">{video_link(v, "vlink vlink--sm")}</p>' if v else ""
-        cards.append(f'''<li class="term">
-        <h3 class="term__name">{e(term)}</h3>
-        <p class="term__def">{e(d)}</p>{vh}
+        cards.append(f'''<li class="term" data-term="{e(term)}">
+        <div class="term__inner">
+          <div class="term__face term__front">
+            <span class="term__letter" aria-hidden="true">{e(term[0].upper())}</span>
+            <h3 class="term__name">{e(term)}</h3>
+            <button class="term__flip" type="button" aria-expanded="false"><span>See the definition</span>{icon("arrow", "icon")}</button>
+          </div>
+          <div class="term__face term__back">
+            <p class="term__def">{e(d)}</p>{vh}
+            <button class="term__unflip" type="button" aria-label="Back to the term {e(term)}">{icon("reset", "icon")}</button>
+          </div>
+        </div>
       </li>''')
     return f'''
 <section class="section decoder-sec" id="decoder" aria-labelledby="decoder-h">
@@ -471,12 +515,16 @@ def decoder():
         <h2 class="h2" id="decoder-h" data-split>The words nobody explains <span class="soft">at orientation.</span></h2>
       </div>
       <div class="stack stack--xs">
-        <p class="lede" data-reveal>{len(C.TERMS)} terms, in plain English. Where Dr. Fedor has a video on one, it's linked.</p>
-        <label class="search search--sm" data-reveal><span class="visually-hidden">Search the decoder</span>{icon("search", "icon")}<input id="term-q" type="search" placeholder="Look up a term" autocomplete="off"></label>
+        <p class="lede" data-reveal>{len(C.TERMS)} flashcards, in plain English. Flip one to read it, or quiz yourself first.</p>
+        <div class="decoder-tools" data-reveal>
+          <label class="search search--sm"><span class="visually-hidden">Search the decoder</span>{icon("search", "icon")}<input id="term-q" type="search" placeholder="Look up a term" autocomplete="off"></label>
+          <button class="btn btn--ghost btn--sm" type="button" data-shuffle>{icon("reset", "icon")} Shuffle</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-flipall aria-pressed="false">Flip all</button>
+        </div>
       </div>
     </div>
-    <ul class="terms" role="list" id="terms-grid" data-stagger>{"".join(cards)}</ul>
-    <div class="more-wrap"><button class="more" type="button" aria-controls="terms-grid" aria-expanded="false" hidden>Show all {len(C.TERMS)} terms</button></div>
+    <ul class="terms" role="list" id="terms-grid">{"".join(cards)}</ul>
+    <div class="more-wrap"><button class="more" type="button" aria-controls="terms-grid" aria-expanded="false" hidden>Show all {len(C.TERMS)} cards</button></div>
     <p class="empty terms-empty" hidden>No term matches that. <a href="{C.CHANNEL}" rel="noopener">Ask it on YouTube</a> and it may become the next video.</p>
   </div>
 </section>'''
@@ -488,7 +536,7 @@ def vcard(key, feature=False):
     src = f"img/yt/{vid}-{w}.webp" if (SITE / "img" / "yt" / f"{vid}-{w}.webp").exists() else f"img/yt/{vid}-640.webp"
     sizes = "(min-width: 56rem) 45vw, 100vw" if feature else "(min-width: 56rem) 24vw, (min-width: 36rem) 45vw, 100vw"
     return f'''<article class="vcard{' vcard--feature' if feature else ''}">
-      <a class="vcard__thumb" href="https://www.youtube.com/watch?v={vid}" data-video="{vid}" data-title="{e(title)}" aria-label="Play {e(title)} ({dur})">
+      <a class="vcard__thumb" data-cursor="Play" href="https://www.youtube.com/watch?v={vid}" data-video="{vid}" data-title="{e(title)}" aria-label="Play {e(title)} ({dur})">
         <img src="{src}" alt="" width="{w}" height="{round(w*9/16)}" loading="lazy" decoding="async" sizes="{sizes}">
         <span class="vcard__play">{icon("play")}</span>
         <span class="vcard__dur">{dur}</span>
@@ -504,7 +552,7 @@ def videos():
         ti = "" if sel else ' tabindex="-1"'
         tabs.append(f'<button class="chip" role="tab" id="vtab-{sid}" aria-controls="vpanel-{sid}" aria-selected="{str(sel).lower()}"{ti}>{e(name)}</button>')
         grid = "".join(vcard(k) for k in keys)
-        panels.append(f'<div class="vgrid" role="tabpanel" id="vpanel-{sid}" aria-labelledby="vtab-{sid}"{"" if sel else " hidden"}>{grid}</div>')
+        panels.append(f'<div class="vgrid" role="tabpanel" id="vpanel-{sid}" aria-labelledby="vtab-{sid}" data-cursor="Drag"{"" if sel else " hidden"}>{grid}</div>')
     fvid, ftitle, fdur = yt("credit")
     return f'''
 <section class="section section--sand videos-sec" id="videos" aria-labelledby="videos-h">
@@ -596,7 +644,7 @@ def cta():
       <h2 class="h2 cta__title" id="cta-h" data-split>Get the next explainer <span class="soft">first.</span></h2>
       <p class="cta__lede" data-reveal>Straight answers about how college actually works, from someone who has worked inside it for twenty years. Free, on YouTube.</p>
       <div class="cluster cta__actions" data-reveal>
-        <a class="btn btn--gold" href="{C.SUBSCRIBE}" rel="noopener">Subscribe on YouTube {icon("arrow", "icon arrow")}</a>
+        <a class="btn btn--gold" href="{C.SUBSCRIBE}" rel="noopener" data-magnetic>Subscribe on YouTube {icon("arrow", "icon arrow")}</a>
         <a class="btn btn--ghost-inv" href="{watch_url("credit")}" rel="noopener">{icon("play", "icon")} Watch the credit hour video</a>
       </div>
     </div>
@@ -679,7 +727,7 @@ def page():
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/Fraunces-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="img/fedor-profile-1100.webp" as="image" imagesrcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" imagesizes="(min-width: 56rem) 400px, 68vw">
+<link rel="preload" href="img/fedor-profile-700.webp" as="image" imagesrcset="img/fedor-profile-700.webp 700w, img/fedor-profile-1100.webp 1100w" imagesizes="(min-width: 56rem) 260px, 40vw">
 <link rel="preload" href="fonts/Fraunces-Italic-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -687,8 +735,14 @@ def page():
 </head>
 <body>
 {body}
+<script src="js/vendor/gsap.min.js" defer></script>
+<script src="js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="js/vendor/Flip.min.js" defer></script>
+<script src="js/vendor/lenis.min.js" defer></script>
 <script src="js/motion.js" defer></script>
 <script src="js/app.js" defer></script>
+<script src="js/fx.js" defer></script>
+<div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
 </body>
 </html>
 '''
