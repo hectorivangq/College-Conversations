@@ -133,7 +133,7 @@
         y: () => (rnd(i, 2) - 0.5) * innerHeight * 0.85,
         rotation: (rnd(i, 3) - 0.5) * 56,
         scale: 1.25 + rnd(i, 4) * 0.7,
-        opacity: 0.35,
+        opacity: 0.75,
         borderBottomColor: 'rgba(0,0,0,0)',
         duration: 1,
         ease: 'power3.out',
