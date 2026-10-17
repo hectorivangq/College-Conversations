@@ -230,5 +230,5 @@
 
   /* Re-measure once fonts and images have settled */
   document.fonts && document.fonts.ready.then(() => ST.refresh());
-  addEventListener('load', () => ST.refresh());
+  if (document.readyState === 'complete') ST.refresh(); else addEventListener('load', () => ST.refresh());
 })();

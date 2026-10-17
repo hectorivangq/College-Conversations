@@ -186,7 +186,7 @@ def hero():
   <div class="hero__bg" aria-hidden="true"><span class="hero__glow"></span><span class="hero__glow hero__glow--2"></span><span class="hero__grid"></span></div>
   <div class="container hero__inner">
     <a class="guide" href="#about" data-reveal>
-      <span class="guide__img"><img src="img/fedor-profile-700.webp" width="700" height="875" alt="" fetchpriority="high"></span>
+      <span class="guide__img"><img src="img/fedor-profile-144.webp" srcset="img/fedor-profile-96.webp 96w, img/fedor-profile-144.webp 144w" sizes="3rem" width="700" height="875" alt=""></span>
       <span class="guide__text"><span class="guide__name">Dr. Janice Fedor</span><span class="guide__role">Your guide, 20 years in higher education</span></span>
     </a>
     <h1 class="hero__title" data-split>College doesn't come with instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
@@ -739,13 +739,19 @@ def page():
 </head>
 <body>
 {body}
-<script src="js/vendor/gsap.min.js" defer></script>
-<script src="js/vendor/ScrollTrigger.min.js" defer></script>
-<script src="js/vendor/Flip.min.js" defer></script>
-<script src="js/vendor/lenis.min.js" defer></script>
-<script src="js/motion.js" defer></script>
-<script src="js/app.js" defer></script>
-<script src="js/fx.js" defer></script>
+<template id="after-paint"><script src="js/vendor/gsap.min.js"></script><script src="js/vendor/ScrollTrigger.min.js"></script><script src="js/vendor/Flip.min.js"></script><script src="js/vendor/lenis.min.js"></script><script src="js/motion.js"></script><script src="js/app.js"></script><script src="js/fx.js"></script></template>
+<script>/* The scripts load once the first frame is on screen (first paint, or two frames in), so the text paints without waiting for them; they still run in order */
+(function () {{
+  var done = false;
+  function load() {{
+    if (done) return; done = true;
+    document.getElementById('after-paint').content.querySelectorAll('script').forEach(function (s) {{
+      var el = document.createElement('script'); el.src = s.getAttribute('src'); el.async = false; document.body.appendChild(el);
+    }});
+  }}
+  try {{ new PerformanceObserver(function () {{ setTimeout(load, 0); }}).observe({{ type: 'paint', buffered: true }}); }} catch (e) {{}}
+  requestAnimationFrame(function () {{ requestAnimationFrame(function () {{ setTimeout(load, 0); }}); }});
+}})();</script>
 </body>
 </html>
 '''

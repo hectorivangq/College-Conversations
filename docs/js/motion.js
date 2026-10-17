@@ -113,7 +113,8 @@
 
   /* Failsafe: nothing above the fold may stay hidden if the observer is late
      (background tab, slow device). */
-  window.addEventListener('load', () => setTimeout(() => {
+  const afterLoad = (fn) => (document.readyState === 'complete' ? fn() : window.addEventListener('load', fn));
+  afterLoad(() => setTimeout(() => {
     document.querySelectorAll('[data-reveal]:not(.is-in)').forEach((el) => {
       if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('is-in'); if (el.hasAttribute('data-split')) markDone(el); io.unobserve(el); }
     });
