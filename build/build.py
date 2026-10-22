@@ -674,7 +674,7 @@ def footer():
         <li><a href="{C.CHANNEL}" rel="noopener">YouTube channel</a></li><li><a href="{C.SUBSCRIBE}" rel="noopener">Subscribe</a></li><li><a href="{watch_url("credit")}" rel="noopener">Understanding Credit Hours</a></li></ul></nav>
     </div>
     <div class="footer-base">
-      <p class="small">&copy; <span data-year>2026</span> Dr. Janice Fedor, College Conversations.</p>
+      <p class="small">&copy; <span data-year>2026</span> Dr. Janice Fedor, College Conversations. <a href="privacy.html">Privacy</a></p>
       <p class="small footer-note">Links go to outside sites we don't control. Deadlines, amounts and rules change, so confirm anything important with your school's financial aid office or registrar. Links checked {C.CHECKED}.</p>
     </div>
   </div>
