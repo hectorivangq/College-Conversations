@@ -146,7 +146,7 @@ def header():
     </a>
     <nav class="nav" aria-label="Main">{links}</nav>
     <a class="btn btn--gold btn--sm header-cta" href="{C.SUBSCRIBE}" rel="noopener">Subscribe on YouTube</a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">{icon("menu", "icon icon--open")}{icon("close", "icon icon--close")}</button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="nav-toggle__open">Menu</span><span class="nav-toggle__close">Close</span></button>
   </div>
   <div class="container mobile-nav" id="mobile-nav" hidden>
     <nav aria-label="Mobile">{mlinks}</nav>
@@ -643,13 +643,12 @@ def cta():
 <section class="section cta-sec" aria-labelledby="cta-h">
   <div class="container">
     <div class="cta">
-      <div class="cta__rings" aria-hidden="true"><span></span><span></span><span></span></div>
       {CAP.format(cls="cta__mark")}
       <h2 class="h2 cta__title" id="cta-h" data-split>Get the next explainer <span class="soft">first.</span></h2>
       <p class="cta__lede" data-reveal>Straight answers about how college actually works, from someone who has worked inside it for twenty years. Free, on YouTube.</p>
       <div class="cluster cta__actions" data-reveal>
         <a class="btn btn--gold" href="{C.SUBSCRIBE}" rel="noopener" data-magnetic>Subscribe on YouTube {icon("arrow", "icon arrow")}</a>
-        <a class="btn btn--ghost-inv" href="{watch_url("credit")}" rel="noopener">{icon("play", "icon")} Watch the credit hour video</a>
+        <a class="btn btn--ghost" href="{watch_url("credit")}" rel="noopener">{icon("play", "icon")} Watch the credit hour video</a>
       </div>
     </div>
   </div>
