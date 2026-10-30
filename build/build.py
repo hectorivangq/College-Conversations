@@ -801,11 +801,22 @@ def curly(doc):
 if __name__ == "__main__":
     thumbs()
     bundle_css()
-    (SITE / "sitemap.xml").write_text(
+    doc = stamp(minify_html(curly(page())))
+    # lastmod moves only when the page did, so search engines can trust it. privacy.html is
+    # hand-written, so it gets no date the build can't vouch for.
+    import re
+    from datetime import date
+    lastmod = date.today().isoformat()
+    index, sitemap = SITE / "index.html", SITE / "sitemap.xml"
+    if index.exists() and sitemap.exists() and index.read_text(encoding="utf-8") == doc:
+        kept = re.search(r"<lastmod>([^<]+)</lastmod>", sitemap.read_text(encoding="utf-8"))
+        lastmod = kept.group(1) if kept else lastmod
+    sitemap.write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f'  <url><loc>{C.SITE_URL}</loc><lastmod>{__import__("datetime").date.today().isoformat()}</lastmod></url>\n</urlset>\n', encoding="utf-8")
+        f'  <url><loc>{C.SITE_URL}</loc><lastmod>{lastmod}</lastmod></url>\n'
+        f'  <url><loc>{C.SITE_URL}privacy.html</loc></url>\n</urlset>\n', encoding="utf-8")
     (SITE / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {C.SITE_URL}sitemap.xml\n", encoding="utf-8")
     (SITE / ".nojekyll").write_text("", encoding="utf-8")  # serve files as-is (keeps _-prefixed names)
     (SITE / "CNAME").write_text(C.SITE_URL.split("/")[2] + "\n", encoding="utf-8")
-    (SITE / "index.html").write_text(stamp(minify_html(curly(page()))), encoding="utf-8")
+    (SITE / "index.html").write_text(doc, encoding="utf-8")
     print("wrote", SITE / "index.html", "resources:", len(C.RESOURCES), "tasks:", sum(len(s['items']) for s in C.ROADMAP), "terms:", len(C.TERMS))
