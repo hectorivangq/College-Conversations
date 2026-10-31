@@ -184,11 +184,8 @@ def hero():
     return f'''
 <section class="hero" id="top">
   <div class="hero__bg" aria-hidden="true"><span class="hero__glow"></span><span class="hero__glow hero__glow--2"></span><span class="hero__grid"></span></div>
-  <div class="container hero__inner">
-    <a class="guide" href="#about" data-reveal>
-      <span class="guide__img"><img src="img/fedor-profile-144.webp" srcset="img/fedor-profile-96.webp 96w, img/fedor-profile-144.webp 144w" sizes="3rem" width="700" height="875" alt=""></span>
-      <span class="guide__text"><span class="guide__name">Dr. Janice Fedor</span><span class="guide__role">Your guide, 20 years in higher education</span></span>
-    </a>
+  <div class="container hero__inner hero__inner--split">
+    <div class="hero__copy">
     <h1 class="hero__title" data-split>College doesn't come with instructions. <em class="hero__accent">Here they are.<svg class="hero__swash" data-reveal viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 18 C 90 6, 200 4, 416 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></em></h1>
     <p class="hero__lede">The forms, tools, deadlines and straight answers you need from senior year to your first job, gathered by a professor who has spent two decades inside higher education.</p>
     <form class="finder" role="search" action="#library" data-reveal style="--i:4">
@@ -199,6 +196,14 @@ def hero():
     </form>
     <div class="qchips" data-reveal style="--i:5"><span class="qchips__label">Popular:</span>{chips}</div>
     <p class="checked" data-reveal style="--i:6"><span class="pill__dot"></span>Every link opened and checked {C.CHECKED}</p>
+    </div>
+    <div class="hero__figure">
+      <div class="arch" aria-hidden="true"></div>
+      <div class="arch__clip"><img class="arch__img" src="img/fedor-think-845.webp" srcset="img/fedor-think-480.webp 480w, img/fedor-think-845.webp 845w" sizes="(min-width: 64rem) 24rem, 60vw" width="845" height="1385" alt="Dr. Janice Fedor in glasses, one finger raised as she makes a point" fetchpriority="high" decoding="async"></div>
+      <a class="floater floater--a" href="#about"><b>20 years</b><span>in higher education</span></a>
+      <a class="floater floater--b" href="#videos"><b>350K+</b><span>views on the channel</span></a>
+      <a class="floater floater--c" href="#library"><b>{n}</b><span>free links, every one checked</span></a>
+    </div>
   </div>
   <div class="arc">
     <p class="arc__hint" aria-hidden="true">Drag to spin. Tap a card to find it.</p>
@@ -736,6 +741,7 @@ def page():
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="image" href="img/fedor-think-845.webp" imagesrcset="img/fedor-think-480.webp 480w, img/fedor-think-845.webp 845w" imagesizes="(min-width: 64rem) 24rem, 60vw">
 <link rel="preload" href="fonts/Fraunces-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
